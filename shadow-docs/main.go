@@ -4,10 +4,20 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"shadow-docs/configs"
+	"shadow-docs/internal/database"
 	"time"
 
 	"github.com/gin-gonic/gin"
 )
+
+func init() {
+	configs.LoadConfig()
+	if err := database.Connect(); err != nil {
+		log.Fatalf("Error connecting to MongoDB: %v", err)
+		os.Exit(1)
+	}
+}
 
 func main() {
 	// Initialize Gin router

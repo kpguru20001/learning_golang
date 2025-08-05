@@ -1,9 +1,13 @@
 package middleware
 
 import (
+	"context"
 	"log"
 	"net/http"
+	"shadow-docs/configs"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 // LoggingMiddleware logs HTTP requests with timing information
@@ -21,12 +25,12 @@ func CORSMiddleware(next http.Handler) http.Handler {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-		
+
 		if r.Method == "OPTIONS" {
 			w.WriteHeader(http.StatusOK)
 			return
 		}
-		
+
 		next.ServeHTTP(w, r)
 	})
 }
@@ -38,7 +42,15 @@ func SecurityHeadersMiddleware(next http.Handler) http.Handler {
 		w.Header().Set("X-Frame-Options", "DENY")
 		w.Header().Set("X-XSS-Protection", "1; mode=block")
 		w.Header().Set("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
-		
+
 		next.ServeHTTP(w, r)
 	})
-} 
+}
+
+func GinContextToContextMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		ctx := context.WithValue(c.Request.Context(), configs.Constants.GinContextKey, c)
+		c.Request = c.Request.WithContext(ctx)
+		c.Next()
+	}
+}

@@ -1,11 +1,10 @@
 package database
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"shadow-docs/configs"
-	"time"
+	"shadow-docs/pkg/utils"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -14,15 +13,8 @@ import (
 var Client *mongo.Client
 var Database *mongo.Database
 
-func StandardContext() context.Context {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
-	return ctx
-}
-
 func Connect() error {
-	ctx := StandardContext()
+	ctx := utils.StandardContextTimeout()
 
 	uri := fmt.Sprintf("mongodb://%s:%s/%s?authSource=%s&ssl=%s",
 		configs.Configuration.Database.Host,
@@ -48,7 +40,7 @@ func Connect() error {
 }
 
 func Disconnect() error {
-	ctx := StandardContext()
+	ctx := utils.StandardContextTimeout()
 
 	if err := Client.Disconnect(ctx); err != nil {
 		log.Fatalf("Error disconnecting from MongoDB: %v", err)

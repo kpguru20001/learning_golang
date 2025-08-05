@@ -12,6 +12,7 @@ type Config struct {
 	Server   ServerConfig
 	Database DatabaseConfig
 	Logging  LoggingConfig
+	Clerk    ClerkConfig
 }
 
 // ServerConfig holds server-specific configuration
@@ -36,6 +37,10 @@ type DatabaseConfig struct {
 // LoggingConfig holds logging-specific configuration
 type LoggingConfig struct {
 	Level string
+}
+
+type ClerkConfig struct {
+	SecretKey string
 }
 
 var Configuration *Config
@@ -65,6 +70,9 @@ func LoadConfig() *Config {
 		},
 		Logging: LoggingConfig{
 			Level: getEnv("LOG_LEVEL", "info"),
+		},
+		Clerk: ClerkConfig{
+			SecretKey: getEnv("CLERK_SECRET_KEY", ""),
 		},
 	}
 

@@ -1,4 +1,4 @@
-.PHONY: build run test clean deps lint help
+.PHONY: build run test clean deps lint help dev
 
 # Default target
 all: build
@@ -12,6 +12,11 @@ build:
 run:
 	@echo "Running application..."
 	go run main.go
+
+# Run with live reload using Air
+dev:
+	@echo "Starting development server with live reload..."
+	air
 
 # Run tests
 test:
@@ -56,6 +61,7 @@ help:
 	@echo "Available targets:"
 	@echo "  build         - Build the application"
 	@echo "  run           - Run the application"
+	@echo "  dev           - Run with live reload using Air"
 	@echo "  test          - Run tests"
 	@echo "  test-coverage - Run tests with coverage"
 	@echo "  clean         - Clean build artifacts"

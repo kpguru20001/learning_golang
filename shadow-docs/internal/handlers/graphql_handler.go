@@ -33,7 +33,8 @@ func GraphQLHandler() gin.HandlerFunc {
 }
 
 func GQLPlaygroundHandler() gin.HandlerFunc {
-	h := playground.Handler("GraphQL", "/graphql")
+	opts := playground.ApolloSandboxOption(playground.WithApolloSandboxInitialStateIncludeCookies(true))
+	h := playground.ApolloSandboxHandler("GraphQL", "/graphql", opts)
 	return func(c *gin.Context) {
 		h.ServeHTTP(c.Writer, c.Request)
 	}

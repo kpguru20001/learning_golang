@@ -43,6 +43,7 @@ Thumbs.db
 # Build output
 bin/
 dist/
+tmp/
 
 # Coverage reports
 coverage.txt 

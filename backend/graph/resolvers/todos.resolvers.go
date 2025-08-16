@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"shadow-docs/graph"
 	"shadow-docs/graph/models"
+	"time"
 )
 
 // CreateTodo is the resolver for the createTodo field.
@@ -33,7 +34,18 @@ func (r *queryResolver) Todos(ctx context.Context) ([]*models.Todo, error) {
 
 // Todo is the resolver for the todo field.
 func (r *queryResolver) Todo(ctx context.Context, id string) (*models.Todo, error) {
-	panic(fmt.Errorf("not implemented: Todo - todo"))
+	// Just return a dummy todo
+	return &models.Todo{
+		ID:   id,
+		Text: "Dummy Todo",
+		Done: false,
+		User: &models.User{
+			ID:   "1",
+			Name: "John Doe",
+		},
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}, nil
 }
 
 // Mutation returns graph.MutationResolver implementation.
